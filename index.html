@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abdul Raheem — ML & AI Engineer</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Mono:wght@400;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --neon-pink: #ff2d75;
+            --neon-cyan: #00f0ff;
+            --neon-green: #39ff14;
+            --neon-yellow: #ffe600;
+            --neon-purple: #bf5af2;
+            --neon-orange: #ff6b00;
+            --bg-dark: #0d0d0d;
+            --bg-card: #141420;
+            --bg-card-alt: #1a1a2e;
+            --text-white: #f0f0f0;
+            --text-dim: #8888a0;
+            --scanline: rgba(0,240,255,0.03);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-white);
+            overflow-x: hidden;
+        }
+        /* CRT Scanlines */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: repeating-linear-gradient(0deg, transparent, transparent 2px, var(--scanline) 2px, var(--scanline) 4px);
+            pointer-events: none;
+            z-index: 9999;
+        }
+        /* Neon glow */
+        .glow-pink { text-shadow: 0 0 10px var(--neon-pink), 0 0 40px var(--neon-pink), 0 0 80px rgba(255,45,117,0.3); }
+        .glow-cyan { text-shadow: 0 0 10px var(--neon-cyan), 0 0 40px var(--neon-cyan), 0 0 80px rgba(0,240,255,0.3); }
+        .glow-green { text-shadow: 0 0 10px var(--neon-green), 0 0 40px var(--neon-green); }
+
+        /* Grid BG */
+        .retro-grid {
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: linear-gradient(rgba(0,240,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,240,255,0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            z-index: 0; pointer-events: none;
+        }
+        .retro-grid::before {
+            content: ''; position: absolute; bottom: 0; left: 0;
+            width: 100%; height: 50%;
+            background: linear-gradient(to top, rgba(255,45,117,0.05), transparent);
+        }
+        /* Floating shapes */
+        .shape { position: fixed; border-radius: 50%; filter: blur(80px); pointer-events: none; z-index: 0; }
+        .shape-1 { width: 400px; height: 400px; background: rgba(255,45,117,0.12); top: 10%; left: -5%; animation: fl1 8s ease-in-out infinite; }
+        .shape-2 { width: 350px; height: 350px; background: rgba(0,240,255,0.1); top: 60%; right: -5%; animation: fl2 10s ease-in-out infinite; }
+        .shape-3 { width: 300px; height: 300px; background: rgba(57,255,20,0.07); bottom: 10%; left: 30%; animation: fl1 12s ease-in-out infinite; }
+        @keyframes fl1 { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-30px)} }
+        @keyframes fl2 { 0%,100%{transform:translateY(0)} 50%{transform:translateY(25px)} }
+
+        /* Nav */
+        nav {
+            position: fixed; top: 0; width: 100%;
+            background: rgba(13,13,13,0.92); backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(0,240,255,0.1);
+            z-index: 1000; padding: 0 2rem;
+        }
+        .nav-inner { max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; height: 60px; }
+        .nav-logo { font-family: 'Press Start 2P', monospace; font-size: 0.7rem; color: var(--neon-cyan); text-decoration: none; text-shadow: 0 0 10px var(--neon-cyan); }
+        .nav-links { display: flex; gap: 1.6rem; list-style: none; }
+        .nav-links a { font-family: 'Space Mono', monospace; color: var(--text-dim); text-decoration: none; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s; }
+        .nav-links a:hover { color: var(--neon-cyan); text-shadow: 0 0 8px var(--neon-cyan); }
+
+        /* Sections */
+        section { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 5.5rem 2rem; }
+        .stag { font-family: 'Press Start 2P', monospace; font-size: 0.55rem; color: var(--neon-green); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 0.8rem; text-shadow: 0 0 8px var(--neon-green); }
+        .sh { font-size: 2.2rem; font-weight: 800; margin-bottom: 2.5rem; line-height: 1.2; }
+
+        /* HERO */
+        .hero { min-height: 100vh; display: flex; align-items: center; padding-top: 60px; }
+        .hero-content { max-width: 720px; }
+        .hero-terminal { font-family: 'Space Mono', monospace; font-size: 0.78rem; color: var(--neon-green); margin-bottom: 1.5rem; text-shadow: 0 0 6px var(--neon-green); }
+        .hero-terminal .cursor { display: inline-block; width: 8px; height: 16px; background: var(--neon-green); margin-left: 4px; animation: blink 1s step-end infinite; }
+        @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+        .hero h1 { font-size: 3.4rem; font-weight: 800; line-height: 1.05; margin-bottom: 1.2rem; }
+        .hero .nn { color: var(--neon-cyan); text-shadow: 0 0 20px var(--neon-cyan), 0 0 60px rgba(0,240,255,0.4); }
+        .hero .rt { display: block; font-size: 1.5rem; font-weight: 600; color: var(--neon-pink); text-shadow: 0 0 15px var(--neon-pink), 0 0 40px rgba(255,45,117,0.3); margin-top: 0.3rem; }
+        .hero-desc { font-size: 1.05rem; color: var(--text-dim); line-height: 1.7; max-width: 600px; margin-bottom: 2rem; }
+        .hero-buttons { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+        /* Buttons */
+        .rb { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.65rem 1.3rem; font-family: 'Space Mono', monospace; font-size: 0.78rem; font-weight: 700; text-transform: uppercase; text-decoration: none; border: 2px solid; border-radius: 4px; transition: all 0.3s; letter-spacing: 1px; cursor: pointer; }
+        .rb-c { color: var(--neon-cyan); border-color: var(--neon-cyan); box-shadow: 0 0 10px rgba(0,240,255,0.3), inset 0 0 10px rgba(0,240,255,0.05); }
+        .rb-c:hover { background: var(--neon-cyan); color: var(--bg-dark); box-shadow: 0 0 30px rgba(0,240,255,0.5); }
+        .rb-p { color: var(--neon-pink); border-color: var(--neon-pink); box-shadow: 0 0 10px rgba(255,45,117,0.3), inset 0 0 10px rgba(255,45,117,0.05); }
+        .rb-p:hover { background: var(--neon-pink); color: var(--bg-dark); box-shadow: 0 0 30px rgba(255,45,117,0.5); }
+
+        /* Stats */
+        .hero-stats { display: flex; gap: 2.5rem; margin-top: 2.5rem; padding-top: 2rem; border-top: 1px solid rgba(0,240,255,0.1); flex-wrap: wrap; }
+        .hs .hn { font-family: 'Press Start 2P', monospace; font-size: 1rem; color: var(--neon-yellow); text-shadow: 0 0 10px var(--neon-yellow); }
+        .hs .hl { font-size: 0.72rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; margin-top: 0.3rem; }
+
+        /* EXPERTISE */
+        .eg { display: grid; grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); gap: 1.3rem; }
+        .ec { background: var(--bg-card); border: 1px solid rgba(0,240,255,0.08); border-radius: 8px; padding: 1.8rem; position: relative; overflow: hidden; transition: all 0.4s; }
+        .ec::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: linear-gradient(90deg, var(--neon-cyan), var(--neon-pink)); }
+        .ec:hover { border-color: rgba(0,240,255,0.2); transform: translateY(-4px); box-shadow: 0 10px 40px rgba(0,0,0,0.4); }
+        .ec .ce { font-size: 1.8rem; margin-bottom: 0.8rem; }
+        .ec h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.4rem; color: var(--neon-cyan); }
+        .ec p { color: var(--text-dim); font-size: 0.88rem; line-height: 1.6; }
+        .tp { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.8rem; }
+        .pl { font-family: 'Space Mono', monospace; font-size: 0.65rem; padding: 0.25rem 0.6rem; border: 1px solid rgba(0,240,255,0.15); border-radius: 3px; color: var(--neon-cyan); background: rgba(0,240,255,0.04); }
+        .pl-p { color: var(--neon-pink); border-color: rgba(255,45,117,0.15); background: rgba(255,45,117,0.04); }
+        .pl-g { color: var(--neon-green); border-color: rgba(57,255,20,0.15); background: rgba(57,255,20,0.04); }
+        .pl-y { color: var(--neon-yellow); border-color: rgba(255,230,0,0.15); background: rgba(255,230,0,0.04); }
+
+        /* EXPERIENCE */
+        .xg { display: flex; flex-direction: column; gap: 1.3rem; }
+        .xc { background: var(--bg-card); border: 1px solid rgba(255,45,117,0.08); border-left: 3px solid var(--neon-pink); border-radius: 0 8px 8px 0; padding: 1.6rem 1.8rem; transition: all 0.3s; }
+        .xc:hover { border-left-color: var(--neon-cyan); box-shadow: 0 0 20px rgba(0,240,255,0.05); }
+        .xt { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.5rem; }
+        .xc h3 { font-size: 1.15rem; font-weight: 700; }
+        .xc .co { font-family: 'Space Mono', monospace; color: var(--neon-pink); font-size: 0.82rem; text-shadow: 0 0 6px rgba(255,45,117,0.3); }
+        .xc .dt { font-family: 'Space Mono', monospace; font-size: 0.72rem; color: var(--text-dim); background: rgba(255,255,255,0.03); padding: 0.25rem 0.6rem; border-radius: 3px; white-space: nowrap; }
+        .xc ul { margin-top: 0.6rem; padding-left: 1.2rem; }
+        .xc li { color: var(--text-dim); font-size: 0.9rem; line-height: 1.6; margin-bottom: 0.4rem; }
+        .xc li strong { color: var(--text-white); }
+
+        /* PROJECTS */
+        .pg { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.3rem; }
+        .pc { background: var(--bg-card); border: 1px solid rgba(191,90,242,0.08); border-radius: 8px; padding: 1.6rem; transition: all 0.3s; position: relative; overflow: hidden; }
+        .pc::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: linear-gradient(90deg, var(--neon-purple), var(--neon-orange)); }
+        .pc:hover { border-color: rgba(191,90,242,0.2); transform: translateY(-4px); }
+        .pc h3 { font-size: 1.05rem; font-weight: 700; color: var(--neon-purple); margin-bottom: 0.3rem; }
+        .pc .ptk { font-family: 'Space Mono', monospace; font-size: 0.7rem; color: var(--text-dim); margin-bottom: 0.5rem; }
+        .pc p { color: var(--text-dim); font-size: 0.88rem; line-height: 1.5; }
+        .pc a { color: var(--neon-purple); text-decoration: none; font-size: 0.8rem; font-family: 'Space Mono', monospace; display: inline-block; margin-top: 0.6rem; transition: all 0.3s; }
+        .pc a:hover { text-shadow: 0 0 8px var(--neon-purple); }
+
+        /* CERTS */
+        .cg { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 0.8rem; }
+        .ci { display: flex; align-items: center; gap: 1rem; background: var(--bg-card); border: 1px solid rgba(255,230,0,0.08); border-radius: 8px; padding: 1rem 1.3rem; transition: all 0.3s; }
+        .ci:hover { border-color: rgba(255,230,0,0.2); transform: translateX(4px); }
+        .ci .cic { font-size: 1.3rem; color: var(--neon-yellow); text-shadow: 0 0 10px var(--neon-yellow); min-width: 30px; text-align: center; }
+        .ci .cn { font-weight: 600; font-size: 0.9rem; }
+        .ci .cy { font-size: 0.72rem; color: var(--text-dim); font-family: 'Space Mono', monospace; }
+
+        /* EDUCATION */
+        .edu-card { background: var(--bg-card); border: 1px solid rgba(0,240,255,0.08); border-radius: 8px; padding: 1.5rem 1.8rem; margin-bottom: 1rem; }
+        .edu-card h3 { font-size: 1.1rem; font-weight: 700; }
+        .edu-card .edu-school { color: var(--neon-cyan); font-size: 0.9rem; font-family: 'Space Mono', monospace; }
+        .edu-card .edu-detail { color: var(--text-dim); font-size: 0.88rem; margin-top: 0.3rem; }
+
+        /* COMMUNITY */
+        .cmg { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1rem; }
+        .cmc { background: var(--bg-card); border: 1px solid rgba(57,255,20,0.08); border-radius: 8px; padding: 1.3rem; transition: all 0.3s; }
+        .cmc:hover { border-color: rgba(57,255,20,0.2); transform: translateY(-3px); }
+        .cmh { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.5rem; }
+        .cmi { width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; background: rgba(57,255,20,0.06); border: 1px solid rgba(57,255,20,0.1); border-radius: 8px; color: var(--neon-green); font-size: 1rem; }
+        .cmc h3 { font-size: 0.95rem; font-weight: 600; }
+        .cmo { font-size: 0.78rem; color: var(--neon-green); text-shadow: 0 0 4px rgba(57,255,20,0.3); }
+        .cmc p { color: var(--text-dim); font-size: 0.85rem; line-height: 1.5; }
+
+        /* CONTACT */
+        .ctg { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; }
+        .ctl { display: flex; align-items: center; gap: 1rem; background: var(--bg-card); border: 1px solid rgba(191,90,242,0.08); border-radius: 8px; padding: 1.1rem 1.3rem; text-decoration: none; color: var(--text-white); transition: all 0.3s; }
+        .ctl:hover { border-color: var(--neon-purple); box-shadow: 0 0 20px rgba(191,90,242,0.1); transform: translateY(-3px); }
+        .ctl i { font-size: 1.3rem; color: var(--neon-purple); text-shadow: 0 0 8px rgba(191,90,242,0.4); }
+        .ctl .cl { font-size: 0.7rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; }
+        .ctl .cv { font-weight: 600; font-size: 0.9rem; }
+
+        /* Footer */
+        footer { position: relative; z-index: 1; text-align: center; padding: 2.5rem; border-top: 1px solid rgba(0,240,255,0.06); }
+        footer p { font-family: 'Space Mono', monospace; font-size: 0.72rem; color: var(--text-dim); }
+        footer .ht { color: var(--neon-pink); text-shadow: 0 0 6px var(--neon-pink); }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.2rem; }
+            .hero .rt { font-size: 1.1rem; }
+            .hero-stats { gap: 1.5rem; }
+            .nav-links { display: none; }
+            .xt { flex-direction: column; }
+            section { padding: 4rem 1.2rem; }
+        }
+        /* Reveal */
+        .rv { opacity: 0; transform: translateY(30px); transition: all 0.7s cubic-bezier(0.22,1,0.36,1); }
+        .rv.vis { opacity: 1; transform: translateY(0); }
+    </style>
+</head>
+<body>
+    <div class="retro-grid"></div>
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+
+    <nav>
+        <div class="nav-inner">
+            <a href="#" class="nav-logo">XFarooqi://</a>
+            <ul class="nav-links">
+                <li><a href="#expertise">Expertise</a></li>
+                <li><a href="#experience">Experience</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#blogs">Blogs</a></li>
+                <li><a href="#certs">Certs</a></li>
+                <li><a href="#community">Community</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- ===== HERO ===== -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-terminal">
+                <span>> init ml_engineer.exe</span><span class="cursor"></span>
+            </div>
+            <h1>
+                <span class="nn">Abdul Raheem</span>
+                <span class="rt">AI Engineer · ML Engineer · Agentic AI</span>
+            </h1>
+            <p class="hero-desc">
+                I architect and build production-ready applications powered by Large Language Models. 
+                My focus is on moving beyond off-the-shelf models to create robust, secure, scalable, 
+                and context-aware AI systems — deployed across cloud and on-premises environments.
+            </p>
+            <div class="hero-buttons">
+                <a href="https://linkedin.com/in/xfarooqi" target="_blank" class="rb rb-c">
+                    <i class="fab fa-linkedin"></i> LinkedIn
+                </a>
+                <a href="https://github.com/xfarooqi" target="_blank" class="rb rb-p">
+                    <i class="fab fa-github"></i> GitHub
+                </a>
+                <a href="mailto:arfarooqix@gmail.com" class="rb rb-c">
+                    <i class="fas fa-envelope"></i> Email
+                </a>
+            </div>
+            <div class="hero-stats">
+                <div class="hs"><div class="hn">5+</div><div class="hl">Years Experience</div></div>
+                <div class="hs"><div class="hn">LLMs</div><div class="hl">Production Systems</div></div>
+                <div class="hs"><div class="hn">RAG</div><div class="hl">Enterprise Pipelines</div></div>
+                <div class="hs"><div class="hn">6x</div><div class="hl">Certified</div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== EXPERTISE ===== -->
+    <section id="expertise" class="rv">
+        <div class="stag">// core expertise</div>
+        <div class="sh">What I Engineer</div>
+        <div class="eg">
+            <div class="ec">
+                <div class="ce">🔍</div>
+                <h3>Production RAG Systems</h3>
+                <p>Engineering enterprise-grade RAG beyond simple vector lookups. Intelligent chunking, hybrid search (sparse + dense vectors), multi-stage retrieval with query transformation and cross-encoder re-ranking — resulting in verifiable, low-latency systems trusted in production.</p>
+                <div class="tp">
+                    <span class="pl">LangChain</span><span class="pl">LlamaIndex</span><span class="pl">Pinecone</span><span class="pl">Hybrid Search</span><span class="pl">Re-ranking</span>
+                </div>
+            </div>
+            <div class="ec">
+                <div class="ce">🧬</div>
+                <h3>LLM Fine-Tuning & Optimization</h3>
+                <p>Fine-tuning open-source models (Llama 3, Qwen3, Mistral) on custom datasets. Leveraging HuggingFace ecosystem (Transformers, TRL, PEFT) with parameter-efficient methods like LoRA/QLoRA to create smaller, niche-expert models.</p>
+                <div class="tp">
+                    <span class="pl pl-p">Llama 3</span><span class="pl pl-p">Mistral</span><span class="pl pl-p">LoRA</span><span class="pl pl-p">QLoRA</span><span class="pl pl-p">HuggingFace</span><span class="pl pl-p">PEFT</span>
+                </div>
+            </div>
+            <div class="ec">
+                <div class="ce">🤖</div>
+                <h3>Agentic AI Systems</h3>
+                <p>Engineering autonomous AI agents capable of reasoning, planning, and executing multi-step workflows. Building stateful, multi-actor systems with LangGraph for automated synthetic data generation, complex analysis, and MCP-powered automation.</p>
+                <div class="tp">
+                    <span class="pl pl-g">LangGraph</span><span class="pl pl-g">MCP</span><span class="pl pl-g">Multi-Agent</span><span class="pl pl-g">LangSmith</span><span class="pl pl-g">Tool Use</span>
+                </div>
+            </div>
+            <div class="ec">
+                <div class="ce">☁️</div>
+                <h3>Cloud & MLOps</h3>
+                <p>Deploying AI solutions across AWS and Azure — from containerized microservices to fully managed ML platforms. End-to-end MLOps with Docker, Kubernetes, CI/CD pipelines, and real-time model monitoring.</p>
+                <div class="tp">
+                    <span class="pl pl-y">Azure</span><span class="pl pl-y">AWS</span><span class="pl pl-y">Docker</span><span class="pl pl-y">Kubernetes</span><span class="pl pl-y">Databricks</span><span class="pl pl-y">LLMOps</span>
+                </div>
+            </div>
+            <div class="ec">
+                <div class="ce">🔐</div>
+                <h3>Synthetic Data & Privacy</h3>
+                <p>Building synthetic data generation pipelines with 94% accuracy and zero distribution loss. PII anonymization, NeMo guardrails, and enterprise-grade data security for compliance-ready AI systems.</p>
+                <div class="tp">
+                    <span class="pl">Synthetic Data</span><span class="pl">PII Anonymization</span><span class="pl">NeMo</span><span class="pl">Guardrails</span>
+                </div>
+            </div>
+            <div class="ec">
+                <div class="ce">🧠</div>
+                <h3>Deep Learning & Research</h3>
+                <p>Designing neural architectures for CV, NLP, and tabular data. Predictive analytics, real-time inference pipelines, and publishing research at top venues including ICML.</p>
+                <div class="tp">
+                    <span class="pl pl-p">PyTorch</span><span class="pl pl-p">TensorFlow</span><span class="pl pl-p">Scikit-learn</span><span class="pl pl-p">VLLM</span><span class="pl pl-p">CNNs</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== EXPERIENCE ===== -->
+    <section id="experience" class="rv">
+        <div class="stag">// work history</div>
+        <div class="sh">Experience</div>
+        <div class="xg">
+            <div class="xc">
+                <div class="xt">
+                    <div><h3>Machine Learning Engineer (LLM)</h3><div class="co">Betterdata</div></div>
+                    <span class="dt">Feb 2025 – Present</span>
+                </div>
+                <ul>
+                    <li>Built an <strong>intelligent document processing agent</strong> that secured <strong>Google funding</strong> and a feature at <strong>Google Demo Day Singapore</strong>; extracts data with <strong>99% accuracy</strong> using layout-aware algorithms</li>
+                    <li>Engineered an agentic app that <strong>anonymizes invoices</strong> by replacing PII with synthetic data, retaining exact visual layout, fonts, and pixel coordinates</li>
+                    <li>Built an <strong>OpenAI-powered agentic pipeline</strong> connecting multiple data sources to generate high-fidelity synthetic datasets; implemented <strong>LangSmith</strong> for end-to-end tracing and monitoring</li>
+                    <li>Fine-tuned <strong>Llama-3.2</strong> on a <strong>200M-record</strong> cybersecurity dataset for DHS (USA), achieving <strong>94% synthesis accuracy</strong> with zero distribution loss</li>
+                    <li>Built secure <strong>RAG pipelines</strong> with Pinecone vector DBs, sliding-window chunking, and metadata-enhanced filters to reduce LLM hallucinations</li>
+                    <li>Authored <strong>research paper at ICML</strong> on instruction-tuned tabular foundation models</li>
+                </ul>
+            </div>
+            <div class="xc">
+                <div class="xt">
+                    <div><h3>Machine Learning Engineer</h3><div class="co">DevHack Org</div></div>
+                    <span class="dt">Dec 2024 – Feb 2025</span>
+                </div>
+                <ul>
+                    <li>Built an AI agent using <strong>LangChain SQLDB</strong> and <strong>LlamaIndex</strong> to convert natural language into SQL with dynamic chunking and a <strong>Plotly-powered Graphing Agent</strong></li>
+                    <li>Built an <strong>MCP-powered automation agent</strong> using GPT-4o and FastAPI for smart screen interaction from natural language prompts</li>
+                    <li>Developed a <strong>LangGraph multi-agent system</strong> to detect workflow failures, apply fixes, and recover pipelines using agentic principles</li>
+                    <li>Built a <strong>VLLM-powered</strong> prescription extraction app to identify medicine names, dosages, and instructions from handwritten doctor prescriptions</li>
+                    <li>Designed and deployed a <strong>lead-generation bot</strong> using context engineering and RAG workflows</li>
+                </ul>
+            </div>
+            <div class="xc">
+                <div class="xt">
+                    <div><h3>Data Scientist</h3><div class="co">Royal Cyber Inc</div></div>
+                    <span class="dt">Jun 2023 – Nov 2024</span>
+                </div>
+                <ul>
+                    <li>Built <strong>ProClaim</strong> — a claims processing solution with Databricks Lakehouse and Agentic RAG, achieving <strong>40% faster analysis</strong> and processing <strong>100K records in 12 minutes</strong> at 99% accuracy</li>
+                    <li>Deployed a <strong>multi-modal AI chatbot</strong> using Azure OpenAI and Whisper for automated ticket categorization and response generation</li>
+                    <li>Fine-tuned LLMs (Llama 2, GPT-3.5) to build a <strong>Personalized Financial Planner</strong>, increasing customer satisfaction by <strong>25%</strong></li>
+                    <li>Built a scalable <strong>Financial RAG pipeline</strong> processing 1,000+ page documents with advanced chunking and Pinecone embeddings</li>
+                    <li>Built <strong>RCProfilePro</strong> — an ATS-friendly resume converter deployed on Azure Container Apps with Microsoft SSO, boosting screening efficiency by <strong>50%</strong></li>
+                </ul>
+            </div>
+            <div class="xc">
+                <div class="xt">
+                    <div><h3>Machine Learning Engineer</h3><div class="co">ApexTech Health</div></div>
+                    <span class="dt">Aug 2021 – May 2023</span>
+                </div>
+                <ul>
+                    <li>Optimized predictive models for early <strong>Sepsis detection</strong> using live vital data from smartwatches, preventing severe repercussions by <strong>70%</strong></li>
+                    <li>Built robust data pipelines for <strong>10K patient records</strong> with efficient S3 storage</li>
+                    <li>Engineered <strong>real-time vital sign pipelines</strong>, reducing complications by 30%</li>
+                </ul>
+            </div>
+            <div class="xc">
+                <div class="xt">
+                    <div><h3>Open Source Contributor</h3><div class="co">GitHub</div></div>
+                    <span class="dt">Dec 2020 – Feb 2021</span>
+                </div>
+                <div style="margin-top: 0.8rem; padding: 0.8rem 1rem; border-left: 2px solid var(--neon-cyan); background: rgba(0,240,255,0.03); border-radius: 0 6px 6px 0; margin-bottom: 0.6rem;">
+                    <div style="font-weight: 700; font-size: 0.95rem; margin-bottom: 0.3rem;">Lightning AI — Metrics</div>
+                    <p style="color: var(--text-dim); font-size: 0.9rem; line-height: 1.6; margin: 0;">Identified and resolved issue #518 by implementing a comprehensive quality control process for checking and updating non-working links in all .rst files, leading to a <strong style="color:var(--text-white);">95% reduction in broken links</strong> across the website.</p>
+                </div>
+                <div style="margin-top: 0.4rem; padding: 0.8rem 1rem; border-left: 2px solid var(--neon-green); background: rgba(57,255,20,0.03); border-radius: 0 6px 6px 0;">
+                    <div style="font-weight: 700; font-size: 0.95rem; margin-bottom: 0.3rem;">Apache — APISIX</div>
+                    <p style="color: var(--text-dim); font-size: 0.9rem; line-height: 1.6; margin: 0;">Implemented a switch from radixtree_uri to radixtree_host_uri in the default HTTP router with test cases, resolving route priority confusion for users and <strong style="color:var(--text-white);">reducing latency by 15%</strong> and improving overall performance.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== PROJECTS ===== -->
+    <section id="projects" class="rv">
+        <div class="stag">// featured projects</div>
+        <div class="sh">Projects</div>
+        <div class="pg">
+            <div class="pc">
+                <h3>DevHub</h3>
+                <div class="ptk">Python · Flask · Spring Boot · AzureML</div>
+                <p>ML-based web app offering career mentorship, personalized roadmaps, virtual internships, and an LLM chatbot. Drove project to <strong>Imagine Cup National Finals</strong>, won <strong>Microsoft AI Hackathon</strong>, and secured <strong>Microsoft funding</strong>.</p>
+                <a href="https://github.com/XFarooqi/DevHub" target="_blank">→ View on GitHub</a>
+            </div>
+            <div class="pc">
+                <h3>Enterprise Document Analyzer</h3>
+                <div class="ptk">Python · FastAPI · AWS · Amazon Bedrock</div>
+                <p>Scalable document analysis platform using RAG pipeline with Amazon Bedrock, Lambda, and S3. Implemented role-based access guardrails using NeMo for enterprise-grade data security.</p>
+            </div>
+            <div class="pc">
+                <h3>Emodect</h3>
+                <div class="ptk">Keras · CNN · Flask</div>
+                <p>Live camera emotion detection for students — triggers alerts and emails to teachers when detecting signs of distress. Improved student mental health outcomes by <strong>30%</strong>.</p>
+                <a href="https://github.com/XFarooqi/Emodect" target="_blank">→ View on GitHub</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== BLOGS & CONTENT ===== -->
+    <section id="blogs" class="rv">
+        <div class="stag">// blogs & content</div>
+        <div class="sh">Writing & Talks</div>
+        <p style="color: var(--text-dim); margin-top: -1.5rem; margin-bottom: 2rem; font-size: 0.95rem;">I write about LLMs, cloud AI, and ML engineering on <a href="https://dev.to/xfarooqi" target="_blank" style="color: var(--neon-cyan); text-decoration: none;">DEV.to</a> and <a href="https://medium.com/@xfarooqi" target="_blank" style="color: var(--neon-cyan); text-decoration: none;">Medium</a>.</p>
+
+        <div class="pg">
+            <!-- Top blog: 72 reactions -->
+            <div class="pc" style="border-color: rgba(255,230,0,0.15);">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 0.5rem;">
+                    <span style="font-family:'Space Mono',monospace; font-size:0.65rem; color:var(--neon-yellow); border:1px solid rgba(255,230,0,0.2); padding:0.2rem 0.5rem; border-radius:3px;">🔥 MOST POPULAR</span>
+                    <span style="font-family:'Space Mono',monospace; font-size:0.65rem; color:var(--text-dim);">72 ❤️ · 5 min read</span>
+                </div>
+                <h3 style="color: var(--neon-yellow);">Deploy Your LLM on AWS EC2</h3>
+                <div class="ptk">llm · rag · ec2 · aws</div>
+                <p>Step-by-step guide to deploying your own Large Language Model on AWS EC2 — from instance selection to serving inference at scale. Published on AWS Community Builders.</p>
+                <a href="https://dev.to/aws-builders/deploy-your-llm-on-aws-ec2-2ig3" target="_blank" style="color: var(--neon-yellow);">→ Read on DEV.to</a>
+            </div>
+
+            <!-- 19 reactions -->
+            <div class="pc">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 0.5rem;">
+                    <span style="font-family:'Space Mono',monospace; font-size:0.65rem; color:var(--neon-green); border:1px solid rgba(57,255,20,0.2); padding:0.2rem 0.5rem; border-radius:3px;"><i class="fab fa-aws" style="margin-right:4px;"></i> AWS BUILDERS</span>
+                    <span style="font-family:'Space Mono',monospace; font-size:0.65rem; color:var(--text-dim);">19 ❤️ · 4 min read</span>
+                </div>
+                <h3>Deploy Your Static Web App on AWS S3 in 10 Minutes</h3>
+                <div class="ptk">aws · s3 · serverless · static web apps</div>
+                <p>A practical walkthrough on hosting static web applications on S3 — from bucket setup to deployment in under 10 minutes. No servers needed.</p>
+                <a href="https://dev.to/aws-builders/deploy-your-static-web-app-on-aws-s3-in-just-10-minutes-23l5" target="_blank">→ Read on DEV.to</a>
+            </div>
+
+            <!-- 16 reactions -->
+            <div class="pc">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 0.5rem;">
+                    <span style="font-family:'Space Mono',monospace; font-size:0.65rem; color:var(--neon-cyan); border:1px solid rgba(0,240,255,0.2); padding:0.2rem 0.5rem; border-radius:3px;"><i class="fab fa-google" style="margin-right:4px;"></i> GOOGLE AI CHALLENGE</span>
+                    <span style="font-family:'Space Mono',monospace; font-size:0.65rem; color:var(--text-dim);">16 ❤️ · 3 min read</span>
+                </div>
+                <h3>Extractly — Turn PDFs into Data</h3>
+                <div class="ptk">ai · gemini · devchallenge · google</div>
+                <p>Submission for the Google AI Studio Multimodal Challenge — an intelligent tool that converts complex PDF documents into structured, usable data using Gemini.</p>
+                <a href="https://dev.to/xfarooqi/extractly-turn-pdfs-into-data-1gh8" target="_blank">→ Read on DEV.to</a>
+            </div>
+
+            <!-- Deequ -->
+            <div class="pc">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 0.5rem;">
+                    <span style="font-family:'Space Mono',monospace; font-size:0.65rem; color:var(--neon-green); border:1px solid rgba(57,255,20,0.2); padding:0.2rem 0.5rem; border-radius:3px;"><i class="fab fa-aws" style="margin-right:4px;"></i> AWS BUILDERS</span>
+                    <span style="font-family:'Space Mono',monospace; font-size:0.65rem; color:var(--text-dim);">5 ❤️ · 6 min read</span>
+                </div>
+                <h3>Deequ: Your Data's BFF</h3>
+                <div class="ptk">deequ · aws · data · analytics</div>
+                <p>Deep dive into Amazon Deequ for data quality — ensuring reliable ML training data through automated validation, constraint suggestions, and anomaly detection.</p>
+                <a href="https://dev.to/aws-builders/deequ-your-datas-bff-372f" target="_blank">→ Read on DEV.to</a>
+            </div>
+
+            <!-- ECS -->
+            <div class="pc">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 0.5rem;">
+                    <span style="font-family:'Space Mono',monospace; font-size:0.65rem; color:var(--neon-purple); border:1px solid rgba(191,90,242,0.2); padding:0.2rem 0.5rem; border-radius:3px;"><i class="fab fa-dev" style="margin-right:4px;"></i> DEV.TO</span>
+                    <span style="font-family:'Space Mono',monospace; font-size:0.65rem; color:var(--text-dim);">9 min read</span>
+                </div>
+                <h3>Mastering Amazon ECS: Key Building Blocks</h3>
+                <div class="ptk">aws · ecs · containers · cloud</div>
+                <p>Comprehensive guide to Amazon Elastic Container Service — understanding tasks, services, clusters, and how to orchestrate containerized applications at scale.</p>
+                <a href="https://dev.to/xfarooqi/mastering-amazon-ecs-key-building-blocks-explained-538l" target="_blank">→ Read on DEV.to</a>
+            </div>
+
+            <!-- ML 101 -->
+            <div class="pc">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 0.5rem;">
+                    <span style="font-family:'Space Mono',monospace; font-size:0.65rem; color:var(--neon-purple); border:1px solid rgba(191,90,242,0.2); padding:0.2rem 0.5rem; border-radius:3px;"><i class="fab fa-dev" style="margin-right:4px;"></i> DEV.TO</span>
+                    <span style="font-family:'Space Mono',monospace; font-size:0.65rem; color:var(--text-dim);">7 min read</span>
+                </div>
+                <h3>Machine Learning 101: A Guide for Beginners</h3>
+                <div class="ptk">machine learning · beginner · guide</div>
+                <p>A comprehensive beginner's guide covering ML fundamentals — from supervised and unsupervised learning to practical implementation steps for your first model.</p>
+                <a href="https://dev.to/xfarooqi/machine-learning-101-a-comprehensive-guide-for-beginners-4lbp" target="_blank">→ Read on DEV.to</a>
+            </div>
+        </div>
+
+        <!-- Medium & YouTube row -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; margin-top: 1.5rem;">
+            <a href="https://medium.com/@xfarooqi" target="_blank" style="text-decoration:none;">
+                <div class="pc" style="margin:0; height:100%;">
+                    <div style="display:flex; align-items:center; gap:0.8rem; margin-bottom:0.5rem;">
+                        <i class="fab fa-medium" style="font-size:1.5rem; color:var(--text-white);"></i>
+                        <h3 style="color:var(--text-white);">Medium Blog</h3>
+                    </div>
+                    <p>Technical articles on Git workflows, cloud development, and AI engineering. Including guides on GitHub Codespaces and developer productivity.</p>
+                    <span style="color: var(--neon-purple); font-family:'Space Mono',monospace; font-size:0.78rem; display:inline-block; margin-top:0.6rem;">→ Read on Medium</span>
+                </div>
+            </a>
+            <a href="https://www.youtube.com/channel/UCbFCx40RuaNR2-HAOh_VKag" target="_blank" style="text-decoration:none;">
+                <div class="pc" style="margin:0; height:100%; border-color:rgba(255,45,117,0.15);">
+                    <div style="display:flex; align-items:center; gap:0.8rem; margin-bottom:0.5rem;">
+                        <i class="fab fa-youtube" style="font-size:1.5rem; color:var(--neon-pink);"></i>
+                        <h3 style="color:var(--neon-pink);">YouTube Channel</h3>
+                    </div>
+                    <p>Video tutorials and talks on machine learning, cloud computing, and software engineering. Subscribe for deep-dive technical content.</p>
+                    <span style="color: var(--neon-pink); font-family:'Space Mono',monospace; font-size:0.78rem; display:inline-block; margin-top:0.6rem;">→ Watch on YouTube</span>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <!-- ===== CERTIFICATIONS ===== -->
+    <section id="certs" class="rv">
+        <div class="stag">// credentials</div>
+        <div class="sh">Certifications</div>
+        <div class="cg">
+            <div class="ci">
+                <div class="cic"><i class="fab fa-microsoft"></i></div>
+                <div><div class="cn">Azure AI Engineer Associate (AI-102)</div><div class="cy">Microsoft · Jun 2024</div></div>
+            </div>
+            <div class="ci">
+                <div class="cic"><i class="fab fa-microsoft"></i></div>
+                <div><div class="cn">Azure Data Scientist Associate</div><div class="cy">Microsoft · Jul 2024</div></div>
+            </div>
+            <div class="ci">
+                <div class="cic"><i class="fas fa-brain"></i></div>
+                <div><div class="cn">Generative AI Certified Professional</div><div class="cy">Oracle · Jul 2024</div></div>
+            </div>
+            <div class="ci">
+                <div class="cic"><i class="fab fa-github"></i></div>
+                <div><div class="cn">GitHub Foundations</div><div class="cy">GitHub · Jul 2024</div></div>
+            </div>
+            <div class="ci">
+                <div class="cic"><i class="fab fa-docker"></i></div>
+                <div><div class="cn">Docker Essentials</div><div class="cy">IBM · Jun 2024</div></div>
+            </div>
+            <div class="ci">
+                <div class="cic"><i class="fab fa-linux"></i></div>
+                <div><div class="cn">Linux System Administration Essentials</div><div class="cy">Linux Foundation · Jul 2024</div></div>
+            </div>
+            <div class="ci">
+                <div class="cic"><i class="fab fa-microsoft"></i></div>
+                <div><div class="cn">Designing Azure AI Solutions</div><div class="cy">Microsoft · Jul 2023</div></div>
+            </div>
+            <div class="ci">
+                <div class="cic"><i class="fab fa-python"></i></div>
+                <div><div class="cn">Python for Data Science</div><div class="cy">IBM · Aug 2022</div></div>
+            </div>
+            <div class="ci">
+                <div class="cic"><i class="fas fa-graduation-cap"></i></div>
+                <div><div class="cn">AI Programming with Python Nanodegree</div><div class="cy">Udacity · 92% Score</div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== EDUCATION ===== -->
+    <section id="education" class="rv">
+        <div class="stag">// education</div>
+        <div class="sh">Education</div>
+        <div class="edu-card">
+            <h3>Bachelor of Science in Computer Science</h3>
+            <div class="edu-school">COMSATS University — Sahiwal Campus</div>
+            <div class="edu-detail">GPA: 3.56 / 4.0</div>
+        </div>
+        <div class="edu-card">
+            <h3>Aspire Leaders Program</h3>
+            <div class="edu-school">Harvard Business School</div>
+            <div class="edu-detail">Academic and Professional Development Program</div>
+        </div>
+    </section>
+
+    <!-- ===== COMMUNITY ===== -->
+    <section id="community" class="rv">
+        <div class="stag">// community & leadership</div>
+        <div class="sh">Community Impact</div>
+        <div class="cmg">
+            <div class="cmc">
+                <div class="cmh">
+                    <div class="cmi"><i class="fab fa-microsoft"></i></div>
+                    <div><h3>Gold MLSA — EMEA</h3><div class="cmo">Microsoft · 2020 – 2024</div></div>
+                </div>
+                <p>Achieved highest Gold rank. Mentored 10,000+ professionals and students. Built a community of 10K students, organized 2 hackathons, inter-city coding competition, and 50+ tech events. Won Microsoft Mentor award.</p>
+            </div>
+            <div class="cmc">
+                <div class="cmh">
+                    <div class="cmi"><i class="fab fa-google"></i></div>
+                    <div><h3>GDSC Lead</h3><div class="cmo">Google · 2022 – 2023</div></div>
+                </div>
+                <p>Led a 30-member diverse team. Secured $40K in annual resources from DataCamp and 100+ LinkedIn vouchers from Microsoft through strategic collaboration with global communities.</p>
+            </div>
+            <div class="cmc">
+                <div class="cmh">
+                    <div class="cmi"><i class="fab fa-github"></i></div>
+                    <div><h3>GitHub Campus Expert</h3><div class="cmo">GitHub · 2022 – Present</div></div>
+                </div>
+                <p>Supported thousands of students through mentorship and resources. Empowered women and underrepresented minorities via tech initiatives. Delivered talks at 10+ international conferences.</p>
+            </div>
+            <div class="cmc">
+                <div class="cmh">
+                    <div class="cmi"><i class="fab fa-aws"></i></div>
+                    <div><h3>AWS Community Builder</h3><div class="cmo">AWS · 2023 – Present</div></div>
+                </div>
+                <p>Technical thought leader sharing knowledge about cloud-native ML infrastructure with access to AWS resources, mentorship, and networking opportunities.</p>
+            </div>
+            <div class="cmc">
+                <div class="cmh">
+                    <div class="cmi"><i class="fas fa-cloud"></i></div>
+                    <div><h3>CNCF Chapter Organizer</h3><div class="cmo">Cloud Native Sahiwal · 2023 – Present</div></div>
+                </div>
+                <p>Founded Cloud Native Sahiwal. Organizing regular meetups on containerization, microservices, Kubernetes, and cloud-native technologies.</p>
+            </div>
+            <div class="cmc">
+                <div class="cmh">
+                    <div class="cmi"><i class="fas fa-microphone"></i></div>
+                    <div><h3>10+ International Talks</h3><div class="cmo">Global Conferences & Events</div></div>
+                </div>
+                <p>Delivered talks at international conferences representing GitHub, Microsoft, and Google. Advocating tech innovation and community building across borders.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== CONTACT ===== -->
+    <section id="contact" class="rv">
+        <div class="stag">// reach out</div>
+        <div class="sh">Get In Touch</div>
+        <div class="ctg">
+            <a href="mailto:arfarooqix@gmail.com" class="ctl">
+                <i class="fas fa-envelope"></i>
+                <div><div class="cl">Email</div><div class="cv">arfarooqix@gmail.com</div></div>
+            </a>
+            <a href="https://linkedin.com/in/xfarooqi" target="_blank" class="ctl">
+                <i class="fab fa-linkedin"></i>
+                <div><div class="cl">LinkedIn</div><div class="cv">@xfarooqi</div></div>
+            </a>
+            <a href="https://github.com/xfarooqi" target="_blank" class="ctl">
+                <i class="fab fa-github"></i>
+                <div><div class="cl">GitHub</div><div class="cv">@XFarooqi</div></div>
+            </a>
+            <a href="https://twitter.com/X_Farooqi" target="_blank" class="ctl">
+                <i class="fab fa-x-twitter"></i>
+                <div><div class="cl">X / Twitter</div><div class="cv">@X_Farooqi</div></div>
+            </a>
+            <a href="tel:+923323030358" class="ctl">
+                <i class="fas fa-phone"></i>
+                <div><div class="cl">Phone</div><div class="cv">+92 332 3030358</div></div>
+            </a>
+            <a href="https://linktr.ee/abdulraheem01" target="_blank" class="ctl">
+                <i class="fas fa-link"></i>
+                <div><div class="cl">Linktree</div><div class="cv">@abdulraheem01</div></div>
+            </a>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2026 Abdul Raheem Farooqi · Lahore, Pakistan · Built with <span class="ht">♥</span> and caffeine</p>
+    </footer>
+
+    <script>
+        const obs = new IntersectionObserver((entries) => {
+            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('vis'); });
+        }, { threshold: 0.06 });
+        document.querySelectorAll('.rv').forEach(el => obs.observe(el));
+
+        const t = document.querySelector('.hero-terminal span');
+        const full = '> init ml_engineer.exe — system loaded ✓';
+        let i = t.textContent.length;
+        setTimeout(() => {
+            const iv = setInterval(() => {
+                if (i < full.length) { t.textContent = full.slice(0, ++i); } else { clearInterval(iv); }
+            }, 50);
+        }, 1200);
+    </script>
+</body>
+</html>
